@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fulfillorderack
+  labels:
+    app: fulfillorderack
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: fulfillorderack
+  template:
+    metadata:
+      labels:
+        app: fulfillorderack
+    spec:
+      containers:
+        - name: fulfillorderack
+          image: torosent/fulfillorderack
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            - name: TEAMNAME
+              value: TeamBlue
+            - name: CHALLENGEAPPINSIGHTS_KEY
+              value: ""
+            - name: MONGOURL
+              value: ""
+          volumeMounts:
+            - mountPath: /orders
+              name: data
+      volumes:
+        - name: data
+          azureFile:
+            secretName: azure-secret
+            shareName: teamblue
+            readOnly: false

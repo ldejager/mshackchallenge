@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventlistener
+  labels:
+    app: eventlistener
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventlistener
+  template:
+    metadata:
+      labels:
+        app: eventlistener
+    spec:
+      containers:
+        - name: eventlistener
+          image: torosent/sbqueuelistenerack
+          env:
+            - name: TEAMNAME
+              value: TeamBlue
+            - name: CHALLENGEAPPINSIGHTS_KEY
+              value: ""
+            - name: APPINSIGHTS_KEY
+              value: ""
+            - name: SERVICEBUSCONNSTRING
+              value: ""
+            - name: SERVICEBUSQUEUENAME
+              value: ""
+            - name: PROCESSENDPOINT
+              value: "http://fulfillorderack.default.svc.cluster.local:8080/v1/order"

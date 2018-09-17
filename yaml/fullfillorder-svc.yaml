@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: captureorderack
+  name: fulfillorderack
   labels:
-    name: captureorderack
+    app: fulfillorderack
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - port: 80
+    - port: 8080
       targetPort: 8080
       protocol: TCP
   selector:
-    name: captureorderack
+    app: fulfillorderack

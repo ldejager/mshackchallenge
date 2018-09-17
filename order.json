@@ -1,0 +1,10 @@
+{
+  "EmailAddress": "test@email.com",
+  "ID": "123",
+  "PreferredLanguage": "English",
+  "Product": "Product1",
+  "Partition": "Partition1",
+  "Source": "CLI",
+  "Status": "Completed",
+  "Total": 123
+}

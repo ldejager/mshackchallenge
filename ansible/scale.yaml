@@ -1,0 +1,29 @@
+- name: Scale AKS cluster
+  hosts: localhost
+  connection: local
+  vars:
+    client_secret: "your_client_secret"
+    ssh_key: "{{ lookup('file', '~/.ssh/azure.pub') }}"
+    resource_group: TeamBlueResourceGroup
+    location: uksouth
+    aks_name: TeamBlue
+    username: teamblue
+    client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
+    client_secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') }}"
+  tasks:
+  - name: Scaling teamblue AKS cluster
+    azure_rm_aks:
+        name: "{{ aks_name }}"
+        location: "{{ location }}"
+        resource_group: "{{ resource_group }}"
+        dns_prefix: "{{ aks_name }}"
+        linux_profile:
+          admin_username: "{{ username }}"
+          ssh_key: "{{ ssh_key }}"
+        service_principal:
+          client_id: "{{ client_id }}"
+          client_secret: "{{ client_secret }}"
+        agent_pool_profiles:
+          - name: default
+            count: 3
+            vm_size: Standard_D2_v2

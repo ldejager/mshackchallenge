@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: captureorderack
+  labels:
+    app: captureorderack
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: captureorderack
+  template:
+    metadata:
+      labels:
+        app: captureorderack
+    spec:
+      containers:
+        - name: captureorderack
+          image: torosent/captureorderack
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            - name: TEAMNAME
+              value: TeamBlue
+            - name: CHALLENGEAPPINSIGHTS_KEY
+              value: ""
+            - name: MONGOURL
+              value: ""
+            - name : AMQPURL
+              value: ""
